@@ -14,7 +14,7 @@
 */
 
 $router->group(['prefix' => 'api/v1'], function () use ($router) {
-    $router->get('/albums/{band_name:[A-Za-z0-9]+}','SpotifyController@getAlbumsByArtist');
+    $router->get('/albums/{band_name}','SpotifyController@getAlbumsByArtist');
 });
 
 

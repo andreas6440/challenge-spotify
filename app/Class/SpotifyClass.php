@@ -32,6 +32,9 @@ class SpotifyClass
     }
     public static function getUserId($token,$name)
     {
+        if(!isset($name) || $name==""){
+            throw new HttpException(500, 'El nombre del artista no es valido');
+        }
         try {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer '.$token, 
@@ -49,7 +52,10 @@ class SpotifyClass
             throw new HttpException(500, $e->getMessage());
         }
      
-        $body = json_decode((string) $response->getBody());      
+        $body = json_decode((string) $response->getBody());     
+        if(!isset($body->artists->items[0])){
+            throw new HttpException(500, 'Artista no encontrado');
+        } 
         return $body->artists->items[0]->id;
     }
     public static function getalbumsByArtistId($token,$id)
@@ -71,6 +77,9 @@ class SpotifyClass
         }
      
         $body = json_decode((string) $response->getBody());
+        if(!isset($body->items)){
+            throw new HttpException(500, 'No se encontro ningun Album');
+        } 
         return $body;
     }
 
